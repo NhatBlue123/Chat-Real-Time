@@ -3,10 +3,12 @@ import React from 'react';
 import { Row, Col, Button, Typography } from 'antd';
 import { auth, FacebookAuthProvider } from '../../firebase/config.js';
 import { signInWithPopup } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom'
 
 const { Title } = Typography;
 
 export default function Login() {
+  
   const handleFacebookLogin = () => {
     const provider = new FacebookAuthProvider();
     signInWithPopup(auth, provider)
@@ -17,6 +19,9 @@ export default function Login() {
         console.error(error);
       });
   };
+
+
+
 
   return (
     <div>
