@@ -5,17 +5,20 @@ import { PlusSquareOutlined } from '@ant-design/icons';
 const {Panel} = Collapse;
 
 const PanelStyled = styled(Panel)`
-  &&&{
-    .ant-collapse-header, p{
+   &&& {
+    .ant-collapse-header,
+    p {
       color: white;
     }
-    .ant.collapse-content-box{
+
+    .ant-collapse-content-box {
       padding: 0 40px;
     }
-    .add-room{
+
+    .add-room {
       color: white;
       padding: 0;
-    }    
+    }
   }
 `;
 const LinkStyled = styled(Typography.Link)`

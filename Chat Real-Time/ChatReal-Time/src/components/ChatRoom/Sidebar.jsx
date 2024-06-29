@@ -5,9 +5,9 @@ import ListRoom from './ListRoom'
 import styled from 'styled-components'
 
 const SidebarStyled = styled.div`
-  background: #3f0e40;
+   background: #3f0e40;
   color: white;
-  height: 100vh; 
+  height: 100vh;
 `;
 
 export default function Sidebar() {
