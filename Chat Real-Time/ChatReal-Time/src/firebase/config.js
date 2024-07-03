@@ -1,11 +1,9 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, FacebookAuthProvider } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { getAuth, connectAuthEmulator, FacebookAuthProvider } from "firebase/auth";
+import { getFirestore, connectFirestoreEmulator,serverTimestamp } from "firebase/firestore";
+import { getStorage, connectStorageEmulator } from "firebase/storage";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCU6r3gyS5vJffe5Hr3VTe8R0by5ob3CGo",
   authDomain: "chat-app-25ce6.firebaseapp.com",
@@ -23,5 +21,11 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
+if (window.location.hostname === "127.0.0.1") {
+  connectAuthEmulator(auth, "http://127.0.0.1:9099");
+  connectFirestoreEmulator(db, "127.0.0.1", 8080);
+  connectStorageEmulator(storage, "127.0.0.1", 9199);
+}
+
 // Export the necessary instances
-export { db, auth, storage, FacebookAuthProvider };
+export { db, auth, storage, FacebookAuthProvider, serverTimestamp };

@@ -1,11 +1,14 @@
-import React from 'react'
+import React from 'react';
 import { Collapse, Typography, Button } from 'antd';
 import styled from 'styled-components';
 import { PlusSquareOutlined } from '@ant-design/icons';
-const {Panel} = Collapse;
+import useFireStore from '../../hooks/useFireStore';
+import { AuthContext } from '../../Context/AuthProvider';
+
+const { Panel } = Collapse;
 
 const PanelStyled = styled(Panel)`
-   &&& {
+  &&& {
     .ant-collapse-header,
     p {
       color: white;
@@ -21,6 +24,7 @@ const PanelStyled = styled(Panel)`
     }
   }
 `;
+
 const LinkStyled = styled(Typography.Link)`
   display: block;
   margin-bottom: 5px;
@@ -28,14 +32,25 @@ const LinkStyled = styled(Typography.Link)`
 `;
 
 export default function ListRoom() {
+  const { user } = React.useContext(AuthContext);
+  const { uid } = user;
+
+  const roomsConditions = React.useMemo(() => ({
+    fieldName: 'members',
+    operator: 'array-contains',
+    compareValue: uid
+  }), [uid]);
+
+  const rooms = useFireStore('rooms', roomsConditions);
+
   return (
     <Collapse ghost defaultActiveKey={['1']}>
-       <PanelStyled header="List of rooms" key={1}>
-          <LinkStyled>Room1</LinkStyled>
-          <LinkStyled>Room2</LinkStyled>
-          <LinkStyled>Room3</LinkStyled>
-          <Button type='text' icon={<PlusSquareOutlined/>} className='add-room' >Add room</Button>
-       </PanelStyled>
+      <PanelStyled header="List of rooms" key="1">
+        {
+          rooms.map(room => <LinkStyled key={room.id}>{room.name}</LinkStyled>)
+        }
+        <Button type="text" icon={<PlusSquareOutlined />} className="add-room">Add room</Button>
+      </PanelStyled>
     </Collapse>
-  )
+  );
 }
