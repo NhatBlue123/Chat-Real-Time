@@ -5,6 +5,9 @@ import { AuthContext } from "./AuthProvider";
 export const AppContext = React.createContext();
 
 export default function AppProvider ({ children }) {
+  
+  const [isAddRoomVisible,setIsAddRoomVisible] = React.useState(false);
+
   const { user } = React.useContext(AuthContext);
   const { uid } = user;
 
@@ -18,7 +21,7 @@ export default function AppProvider ({ children }) {
 
 
    return(
-    <AppContext.Provider value={{ rooms }} >
+    <AppContext.Provider value={{ rooms, isAddRoomVisible ,setIsAddRoomVisible }} >
         {children}
     </AppContext.Provider>
    )

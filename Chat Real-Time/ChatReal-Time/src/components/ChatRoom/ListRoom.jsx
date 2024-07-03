@@ -42,7 +42,11 @@ export default function ListRoom() {
   //   compareValue: uid
   // }), [uid]);
 
-  const {rooms} = React.useContext(AppContext);
+  const {rooms, setIsAddRoomVisible} = React.useContext(AppContext);
+
+  const handleAddRoom = () =>{
+    setIsAddRoomVisible(true);
+  }
 
   return (
     <Collapse ghost defaultActiveKey={['1']}>
@@ -50,7 +54,7 @@ export default function ListRoom() {
         {
           rooms.map(room => <LinkStyled key={room.id}>{room.name}</LinkStyled>)
         }
-        <Button type="text" icon={<PlusSquareOutlined />} className="add-room">Add room</Button>
+        <Button type="text" icon={<PlusSquareOutlined />} className="add-room" onClick={handleAddRoom} >Add room</Button>
       </PanelStyled>
     </Collapse>
   );
