@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { PlusSquareOutlined } from '@ant-design/icons';
 import useFireStore from '../../hooks/useFireStore';
 import { AuthContext } from '../../Context/AuthProvider';
+import { AppContext } from '../../Context/AppProvider.jsx';
 
 const { Panel } = Collapse;
 
@@ -32,16 +33,16 @@ const LinkStyled = styled(Typography.Link)`
 `;
 
 export default function ListRoom() {
-  const { user } = React.useContext(AuthContext);
-  const { uid } = user;
+  // const { user } = React.useContext(AuthContext);
+  // const { uid } = user;
 
-  const roomsConditions = React.useMemo(() => ({
-    fieldName: 'members',
-    operator: 'array-contains',
-    compareValue: uid
-  }), [uid]);
+  // const roomsConditions = React.useMemo(() => ({
+  //   fieldName: 'members',
+  //   operator: 'array-contains',
+  //   compareValue: uid
+  // }), [uid]);
 
-  const rooms = useFireStore('rooms', roomsConditions);
+  const {rooms} = React.useContext(AppContext);
 
   return (
     <Collapse ghost defaultActiveKey={['1']}>
