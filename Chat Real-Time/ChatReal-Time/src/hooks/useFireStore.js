@@ -1,38 +1,40 @@
-import { collection as firestoreCollection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
-import { auth, db } from '../firebase/config';
-import React from 'react';
+import { collection, onSnapshot, query, where, orderBy } from "firebase/firestore";
+import { db } from "../firebase/config";
+import React from "react";
 
 const useFireStore = (collectionName, condition) => {
-    const [documents, setDocuments] = React.useState([]);
+  const [documents, setDocuments] = React.useState([]);
 
-    React.useEffect(() => {
-        if (!collectionName) return;
+  React.useEffect(() => {
+    if (!condition || !condition.compareValue) {
+      return;
+    }
 
-        const user = auth.currentUser;
-        if (user) {
-            let q = query(firestoreCollection(db, collectionName), orderBy('createdAt'));
+    let collectionRef = collection(db, collectionName);
 
-            if (condition && condition.compareValue && condition.compareValue.length) {
-                q = query(
-                    firestoreCollection(db, collectionName),
-                    where(condition.fieldName, condition.operator, condition.compareValue),
-                    orderBy('createdAt')
-                );
-            }
+    if (condition) {
+      if (!condition.compareValue || !condition.compareValue.length) {
+        return;
+      }
+      collectionRef = query(
+        collectionRef,
+        where(condition.fieldName, condition.operator, condition.compareValue),
+        orderBy("createdAt") // Add this line if you also need ordering
+      );
+    }
 
-            const unsubscribe = onSnapshot(q, (snapshot) => {
-                const docs = snapshot.docs.map(doc => ({
-                    ...doc.data(),
-                    id: doc.id
-                }));
-                setDocuments(docs);
-            });
+    const unsubscribe = onSnapshot(collectionRef, (snapshot) => {
+      const docs = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setDocuments(docs);
+    });
 
-            return () => unsubscribe();
-        }
-    }, [collectionName, condition]);
+    return unsubscribe;
+  }, [collectionName, condition]);
 
-    return documents;
+  return documents;
 };
 
 export default useFireStore;

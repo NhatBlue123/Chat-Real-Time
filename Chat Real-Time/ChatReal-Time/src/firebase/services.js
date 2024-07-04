@@ -1,14 +1,13 @@
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc as firebaseAddDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "./config.js";
 
 export const addDoc = async (collectionName, data) => {
   try {
-    const docRef = doc(collection(db, collectionName));
-    await setDoc(docRef, {
+    const docRef = await firebaseAddDoc(collection(db, collectionName), {
       ...data,
-      createAt: serverTimestamp(),
+      createdAt: serverTimestamp(),
     });
-    console.log('Document successfully written!');
+    console.log('Document successfully written with ID: ', docRef.id);
   } catch (error) {
     console.error('Error writing document: ', error);
   }
